@@ -48,7 +48,10 @@ public class InlineLabelDisplay implements ErrorDisplay {
      * Creates an inline label display with default styling.
      */
     public InlineLabelDisplay() {
-        this(new Color(0xDC, 0x35, 0x45), true, 12f);
+        this(UIManager.getColor("Validation.errorColor") != null
+                ? UIManager.getColor("Validation.errorColor")
+                : new Color(0xDC, 0x35, 0x45),
+                true, 12f);
     }
 
     /**
@@ -138,6 +141,12 @@ public class InlineLabelDisplay implements ErrorDisplay {
             errorLabel.setFont(baseFont.deriveFont(fontSize));
         } else {
             errorLabel.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, (int) fontSize));
+        }
+
+        // Check for global validation font override
+        Font globalFont = UIManager.getFont("Validation.font");
+        if (globalFont != null) {
+            errorLabel.setFont(globalFont.deriveFont(fontSize));
         }
 
         // Try to add the label as an overlay on JLayeredPane

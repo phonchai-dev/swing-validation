@@ -490,9 +490,13 @@ public class BalloonTooltipDisplay implements ErrorDisplay {
      * Builder for creating custom-themed {@code BalloonTooltipDisplay} instances.
      */
     public static class Builder {
-        private Color bgColor = new Color(0x33, 0x33, 0x33);
-        private Color textColor = Color.WHITE;
-        private Color borderColor = null;
+        private Color bgColor = UIManager.getColor("Validation.background") != null
+                ? UIManager.getColor("Validation.background")
+                : new Color(0x33, 0x33, 0x33);
+        private Color textColor = UIManager.getColor("Validation.foreground") != null
+                ? UIManager.getColor("Validation.foreground")
+                : Color.WHITE;
+        private Color borderColor = UIManager.getColor("Validation.borderColor");
         private int arc = 8;
         private int arrowSize = 8;
         private BalloonTooltip.ArrowPosition preferredPosition = BalloonTooltip.ArrowPosition.TOP;

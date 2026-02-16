@@ -19,55 +19,45 @@ import java.util.function.Function;
  * and provides form-level operations (validate all, clear all, etc.).
  * </p>
  *
- * <h2>Quick Start</h2>
+ * <h2>Quick Start (i18n Supported)</h2>
  * 
  * <pre>{@code
+ * // Set global locale (Optional - defaults to English)
+ * FormValidator.setLocale(new Locale("th", "TH"));
+ * 
  * FormValidator validator = new FormValidator();
  *
- * // Set error display style (optional — defaults to dark balloon)
- * validator.setErrorDisplay(BalloonTooltipDisplay.dark());
- *
- * // Add validation rules
- * validator.field(txtUsername).required("Username is required");
- * validator.field(txtEmail)
- *         .required("Email is required")
- *         .email("Please enter a valid email");
- * validator.field(txtAge)
- *         .number("Must be a number")
- *         .min(1, "Must be at least 1")
- *         .max(150, "Must be at most 150");
- * validator.field(cbCountry).required("Please select a country");
- *
- * // Conditional validation
- * validator.field(txtCompany)
- *         .requiredWhen(chkEmployed::isSelected, "Company is required");
- *
- * // Listen for validation state changes
- * validator.onValidationChanged(allValid -> btnSubmit.setEnabled(allValid));
- *
- * // Validate all fields (e.g., on submit)
- * if (validator.validate()) {
- *     // All valid — proceed
- * }
- *
- * // Clear all validation states
- * validator.clearValidation();
- * }</pre>
- *
- * <h2>Custom Component Support</h2>
+ * // Add validation rules (messages auto-fetched from bundle)
+ * validator.field(txtUsername).required();
+ * validator.field(txtEmail).required().email();
+ * validator.field(txtAge).number().min(1).max(150);
  * 
- * <pre>{@code
- * // Register adapter for custom components (global)
- * ComponentAdapterRegistry.getInstance().register(new DatePickerAdapter());
- *
- * // Then use normally
- * validator.field(datePicker).required("Date is required");
+ * // Validate all
+ * if (validator.validate()) {
+ *     // Proceed...
+ * }
  * }</pre>
  *
  * @author phonchai
  * @since 1.0.0
  */
 public class FormValidator {
+
+    // ── Global Configuration ────────────────────────────────────
+
+    /**
+     * Sets the global locale for all validation messages.
+     * <p>
+     * This affects all validators in the application, as message
+     * bundles are loaded statically.
+     * </p>
+     *
+     * @param locale the locale to set (e.g., Locale.ENGLISH or new Locale("th",
+     *               "TH"))
+     */
+    public static void setLocale(Locale locale) {
+        Localization.setLocale(locale);
+    }
 
     // ── State ───────────────────────────────────────────────────
 

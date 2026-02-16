@@ -82,7 +82,13 @@ public class BalloonTooltip extends JComponent {
         this.arrowSize = arrowSize;
         this.arrowPosition = arrowPosition;
         this.shadowEnabled = shadowEnabled;
-        this.textFont = textFont != null ? textFont : UIManager.getFont("Label.font");
+        this.textFont = textFont;
+        if (this.textFont == null) {
+            this.textFont = UIManager.getFont("Validation.font");
+        }
+        if (this.textFont == null) {
+            this.textFont = UIManager.getFont("Label.font");
+        }
         if (this.textFont == null) {
             this.textFont = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
         }
