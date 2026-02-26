@@ -61,7 +61,7 @@ A modern, fluent, and comprehensive validation library for Java Swing, designed 
 <dependency>
     <groupId>com.github.YourUsername</groupId>
     <artifactId>swing-validation</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
@@ -201,7 +201,7 @@ UIManager.put("Validation.errorColor", Color.MAGENTA);
 <dependency>
     <groupId>com.github.YourUsername</groupId>
     <artifactId>swing-validation</artifactId>
-    <version>1.0.0</version>
+    <version>1.2.0</version>
 </dependency>
 ```
 
