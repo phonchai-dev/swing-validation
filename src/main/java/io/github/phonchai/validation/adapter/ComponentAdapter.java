@@ -73,4 +73,24 @@ public interface ComponentAdapter {
      * @param onChange  the callback to invoke on value change
      */
     void addChangeListener(JComponent component, Runnable onChange);
+
+    /**
+     * Installs a focus listener on the component that fires the given
+     * callback whenever the component loses focus (blur).
+     *
+     * <p>
+     * This is used to track the "touched" state of a field.
+     * </p>
+     *
+     * @param component the component to monitor
+     * @param onBlur    the callback to invoke on focus lost
+     */
+    default void addBlurListener(JComponent component, Runnable onBlur) {
+        component.addFocusListener(new java.awt.event.FocusAdapter() {
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                onBlur.run();
+            }
+        });
+    }
 }

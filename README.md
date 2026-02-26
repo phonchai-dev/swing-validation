@@ -105,6 +105,28 @@ validator.field(txtConfirm)
 validator.removeField(txtPhone);
 ```
 
+#### User Experience (UX) & Validation Modes
+
+The library defaults to modern, non-intrusive validation behaviors. You can customize them:
+
+**1. Touched State Validation (Default):**
+Errors won't yell at users on an empty form. They only appear:
+- After the user submits the form once (`validator.validate()`).
+- OR after they focus a field and move away from it (`onBlur`).
+Once a field displays an error, fixing it clears the error in **real-time** on every keystroke.
+
+**2. Pristine Live Validation (Aggressive):**
+Want to show errors instantly from the very first keystroke?
+```java
+validator.setValidateOnInput(true); // Default is false
+```
+
+**3. Disable Real-Time Validation:**
+Only validate when explicitly told.
+```java
+validator.setRealTimeEnabled(false); // Default is true
+```
+
 #### Internationalization & Theming 🌍🎨
 
 **Switching Language:**
@@ -221,6 +243,28 @@ validator.field(txtConfirm)
 ```java
 // ลบฟิลด์ออกจากระบบตรวจสอบ (เคลียร์ Listener ให้เอง ปลอดภัย)
 validator.removeField(txtPhone);
+```
+
+#### ประสบการณ์ผู้ใช้ (UX) และโหมดการตรวจสอบ
+
+เพื่อประสบการณ์ผู้ใช้ที่ดี ไลบรารีซ่อน Error ไว้จนกว่าจะถึงเวลาที่เหมาะสม คุณปรับแต่งพฤติกรรมนี้ได้:
+
+**1. ตรวจสอบเมื่อแตะต้องแล้วเท่านั้น (Touched State - ค่าเริ่มต้น):**
+ระบบจะไม่แดงเตือนรบกวนตอนยังไม่ได้กรอกอะไรเลย Error จะแสดงต่อเมื่อ:
+- ผู้ใช้กดปุ่ม Submit ไปแล้วอย่างน้อย 1 ครั้ง (`validator.validate()`)
+- หรือผู้ใช้เคยคลิกเข้ามาพิมพ์ในช่องนี้ แล้วคลิกออกไปช่องอื่น (`onBlur`)
+เมื่อ Error แสดงออกมาแล้ว หากผู้ใช้กลับมาแก้ ค่าความถูกต้องจะเช็ค **Real-time** ทันทีต่อ 1 ตัวอักษร
+
+**2. แสดงแจ้งเตือนทันทีตั้งแต่ตัวแรกที่พิมพ์ (Pristine Live Validation):**
+อยากให้ขึ้นเตือนขอบแดงทันทีตั้งแต่เริ่มใช้นิ้วพิมพ์เลย เปิดโหมดนี้:
+```java
+validator.setValidateOnInput(true); // ค่าเริ่มต้นคือ false
+```
+
+**3. ปิดแบบ Real-time:**
+ต้องการให้ตรวจสอบเฉพาะตอนกดปุ่ม Submit อย่างเดียว
+```java
+validator.setRealTimeEnabled(false); // ค่าเริ่มต้นคือ true
 ```
 
 #### การเปลี่ยนภาษาและธีม (Internationalization & Theming) 🌍🎨

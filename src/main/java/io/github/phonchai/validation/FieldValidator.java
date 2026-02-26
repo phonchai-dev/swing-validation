@@ -36,6 +36,7 @@ public final class FieldValidator {
     private final List<ValidationRule> rules = new ArrayList<>();
     private ErrorDisplay fieldDisplay; // per-field override (null = use parent's)
     private boolean registered = false;
+    private boolean touched = false;
 
     /**
      * Package-private constructor — instances created by {@link FormValidator}.
@@ -375,6 +376,10 @@ public final class FieldValidator {
         return Collections.unmodifiableList(rules);
     }
 
+    boolean isTouched() {
+        return touched;
+    }
+
     // ──────────────────────────────────────────────────────────────
     // Registration
     // ──────────────────────────────────────────────────────────────
@@ -392,6 +397,15 @@ public final class FieldValidator {
                 .findAdapter(component);
         if (adapter != null) {
             adapter.addChangeListener(component, () -> parent.validateSingleField(this));
+
+            adapter.addBlurListener(component, () -> {
+                if (!touched) {
+                    touched = true;
+                    if (parent.isRealTimeEnabled()) {
+                        parent.validateSingleField(this);
+                    }
+                }
+            });
         }
     }
 }

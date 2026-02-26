@@ -93,6 +93,12 @@ public class FormValidator {
     private boolean realTimeEnabled = true;
 
     /**
+     * Whether real-time validation allows showing errors even before
+     * the entire form has been validated (Live Validation Pristine).
+     */
+    private boolean validateOnInput = false;
+
+    /**
      * Whether this validator has been triggered at least once
      * (via {@link #validate()}). Before first trigger, real-time
      * errors are suppressed to avoid showing errors on empty forms.
@@ -140,6 +146,30 @@ public class FormValidator {
      */
     public ErrorDisplay getErrorDisplay() {
         return defaultDisplay;
+    }
+
+    /**
+     * Enables or disables showing validation errors on input immediately,
+     * even before the first explicit {@link #validate()} call.
+     *
+     * <p>
+     * Use this when you want "live validation" behavior (Pristine Live Validation)
+     * right from the first keystroke.
+     * </p>
+     *
+     * @param enabled true to enable live validation on pristine fields
+     */
+    public void setValidateOnInput(boolean enabled) {
+        this.validateOnInput = enabled;
+    }
+
+    /**
+     * Returns whether validation on input is enabled.
+     *
+     * @return true if validate on input is enabled
+     */
+    public boolean isValidateOnInput() {
+        return validateOnInput;
     }
 
     /**
@@ -383,9 +413,15 @@ public class FormValidator {
             return;
         }
 
-        // If real-time is enabled but hasn't been triggered yet,
-        // only clear existing errors (don't show new ones)
-        if (!hasBeenTriggered) {
+        // We only actively display new errors if:
+        // 1. The form has been submitted once (hasBeenTriggered) OR
+        // 2. The field has been blurred (touched) OR
+        // 3. Pristine live validation is enabled (validateOnInput)
+        boolean canShowError = hasBeenTriggered || fieldValidator.isTouched() || validateOnInput;
+
+        // If not allowed to show new errors yet,
+        // only clear existing errors (e.g. they fixed a field but haven't blurred yet)
+        if (!canShowError) {
             String error = fieldValidator.validateField();
             if (error == null && erroneousFields.contains(fieldValidator.getComponent())) {
                 // Field was fixed — hide error
