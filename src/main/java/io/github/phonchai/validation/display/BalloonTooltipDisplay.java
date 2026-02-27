@@ -66,6 +66,8 @@ public class BalloonTooltipDisplay implements ErrorDisplay {
             BalloonTooltip tooltip,
             JComponent target,
             ComponentAdapter componentListener,
+            JViewport viewport,
+            javax.swing.event.ChangeListener viewportListener,
             Timer fadeTimer) {
     }
 
@@ -280,8 +282,16 @@ public class BalloonTooltipDisplay implements ErrorDisplay {
             }
         });
 
+        // Setup viewport listener
+        JViewport viewport = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, target);
+        javax.swing.event.ChangeListener viewportListener = null;
+        if (viewport != null) {
+            viewportListener = e -> updateTooltipPosition(tooltip, target);
+            viewport.addChangeListener(viewportListener);
+        }
+
         // Store state
-        activeTooltips.put(target, new TooltipState(tooltip, target, listener, null));
+        activeTooltips.put(target, new TooltipState(tooltip, target, listener, viewport, viewportListener, null));
 
         // Fade in
         if (fadeEnabled) {
@@ -410,6 +420,18 @@ public class BalloonTooltipDisplay implements ErrorDisplay {
             return;
         }
 
+        // Check if inside viewport and completely scrolled out
+        JViewport viewport = (JViewport) SwingUtilities.getAncestorOfClass(JViewport.class, target);
+        if (viewport != null) {
+            Rectangle viewRect = viewport.getViewRect();
+            Rectangle targetRect = SwingUtilities.convertRectangle(target,
+                    new Rectangle(0, 0, target.getWidth(), target.getHeight()), viewport);
+            if (!viewRect.intersects(targetRect)) {
+                tooltip.setVisible(false);
+                return;
+            }
+        }
+
         JLayeredPane layeredPane = findLayeredPane(target);
         if (layeredPane == null)
             return;
@@ -452,6 +474,11 @@ public class BalloonTooltipDisplay implements ErrorDisplay {
         // Remove component listener
         if (state.componentListener != null) {
             state.target.removeComponentListener(state.componentListener);
+        }
+
+        // Remove viewport listener
+        if (state.viewport != null && state.viewportListener != null) {
+            state.viewport.removeChangeListener(state.viewportListener);
         }
 
         // Remove from layered pane

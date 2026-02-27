@@ -2,7 +2,7 @@
 
 [![Java](https://img.shields.io/badge/Java-21-orange)](https://www.oracle.com/java/)
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
-[![Validation](https://img.shields.io/badge/Swing-Validation-brightgreen)](https://github.com/phonchai/swing-validation)
+[![Validation](https://img.shields.io/badge/Swing-Validation-brightgreen)](https://github.com/phonchai-dev/swing-validation)
 
 > [🇺🇸 **Read in English**](#english) | [🇹🇭 **อ่านภาษาไทย**](#thai)
 
@@ -59,9 +59,9 @@ A modern, fluent, and comprehensive validation library for Java Swing, designed 
 2. Add the dependency:
 ```xml
 <dependency>
-    <groupId>com.github.YourUsername</groupId>
+    <groupId>com.github.phonchai-dev</groupId>
     <artifactId>swing-validation</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 
@@ -199,9 +199,9 @@ UIManager.put("Validation.errorColor", Color.MAGENTA);
 2. เพิ่ม Dependency:
 ```xml
 <dependency>
-    <groupId>com.github.YourUsername</groupId>
+    <groupId>com.github.phonchai-dev</groupId>
     <artifactId>swing-validation</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 
